@@ -8,6 +8,7 @@ import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Modify from 'ol/interaction/Modify';
 import GeometryType from 'ol/geom/GeometryType';
+import Snap from 'ol/interaction/Snap';
 // import TileLayer from 'ol/layer/Tile';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
@@ -55,4 +56,9 @@ map.addInteraction(new Draw({
   source: source
 }));
 //! [Draw]
-//![interaction]
+//! [Snap]
+map.addInteraction(new Snap({
+  source: source
+}));
+//! [Snap]
+//! [interaction]
