@@ -11,9 +11,25 @@
         font-family: operator-mono;
         background-color: #04041b;
       }
+      #tools {
+        position: absolute;
+        top: 1rem;
+        right: 1rem;
+      }
+      #tools a {
+        display: inline-block;
+        padding: 0.5rem;
+        background: wheat;
+        cursor: pointer;
+        border-radius: 0.5rem;
+      }
     </style>
   </head>
   <body>
     <div id="map-container"></div>
+    <div id="tools">
+      <a id="clear">Clear</a>
+      <a id="download" download="features.json">Download</a>
+    </div>
   </body>
 </html>
