@@ -12,6 +12,7 @@ import sync from 'ol-hashed';
 // import TileLayer from 'ol/layer/Tile';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
+import {Style, Fill, Stroke} from 'ol/style';
 
 const map = new Map({
   target: 'map-container',
@@ -29,7 +30,15 @@ const source = new VectorSource();
 
 //! [layers]
 const layer = new VectorLayer({
-  source: source
+  source: source,
+  style: new Style({
+    fill: new Fill({
+      color: 'brown'
+    })
+  }),
+  stroke: new Stroke({
+    color: 'blue'
+  })
 });
 map.addLayer(layer);
 //! [layers]
