@@ -13,6 +13,9 @@ import sync from 'ol-hashed';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
 import {Style, Fill, Stroke} from 'ol/style';
+import getArea from 'ol/sphere';
+import colormap from 'colormap';
+import { blackbody } from 'colormap/colorScale';
 
 const map = new Map({
   target: 'map-container',
@@ -29,15 +32,24 @@ const source = new VectorSource();
 //! [source]
 
 //! [layers]
+/**
+ * const layer = new VectorLayer({
+ *  source: source,
+ *  style: function(feature, resolution) {
+ *  const name = feature.get('name').toUpperCase();
+ *   return name < "N" ? style1 : style2; // assuming these are created elsewhere
+ *  }
+ * });
+ */
 const layer = new VectorLayer({
   source: source,
   style: new Style({
     fill: new Fill({
       color: 'brown'
+    }),
+    stroke: new Stroke({
+      color: 'blue'
     })
-  }),
-  stroke: new Stroke({
-    color: 'blue'
   })
 });
 map.addLayer(layer);
@@ -86,3 +98,22 @@ source.on('change', function() {
   download.href = 'data:text/json;charset=utf-8,' + json;
 });
 //! [Download]
+
+const min = 1e8; // smallest area
+const max = 2e13; // largest area
+const steps = 75;
+const colorramp = colormap({
+  colormap: 'blackbody',
+  nshades: steps
+});
+
+function clamp(value, low, high) {
+  return Math.max(low, Math.min(value, high));
+}
+
+function getColor(feature) {
+  const area = getArea(feature.getGeometry());
+  const f = Math.pow(clamp((area - min) / (max - min, 0, 1), 1 / 2));
+  const index = Math.round(f * (steps - 1));
+  return colorramp[index];
+}
