@@ -10,7 +10,7 @@ module.exports = {
   },
   devtool: 'source-map',
   devServer: {
-    port: 3000,
+    port: 3090,
     clientLogLevel: 'none',
     stats: 'errors-only'
   },
