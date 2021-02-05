@@ -12,10 +12,28 @@ import sync from 'ol-hashed';
 // import TileLayer from 'ol/layer/Tile';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
-import {Style, Fill, Stroke} from 'ol/style';
-import getArea from 'ol/sphere';
+import {Fill, Stroke, Style} from 'ol/style';
+import {getArea} from 'ol/sphere';
 import colormap from 'colormap';
-import { blackbody } from 'colormap/colorScale';
+
+const min = 1e8; // smallest area
+const max = 2e13; // largest area
+const steps = 75;
+const colorramp = colormap({
+  colormap: 'blackbody',
+  nshades: steps
+});
+
+function clamp(value, low, high) {
+  return Math.max(low, Math.min(value, high));
+}
+
+function getColor(feature) {
+  const area = getArea(feature.getGeometry());
+  const f = Math.pow(clamp((area - min) / (max - min), 0, 1), 1 / 2);
+  const index = Math.round(f * (steps - 1));
+  return colorramp[index];
+}
 
 const map = new Map({
   target: 'map-container',
@@ -43,14 +61,16 @@ const source = new VectorSource();
  */
 const layer = new VectorLayer({
   source: source,
-  style: new Style({
-    fill: new Fill({
-      color: 'brown'
-    }),
-    stroke: new Stroke({
-      color: 'blue'
-    })
-  })
+  style: function(feature) {
+    return new Style({
+      fill: new Fill({
+        color: getColor(feature)
+      }),
+      stroke: new Stroke({
+        color: 'rgba(255,255,255,0.8)'
+      })
+    });
+  }
 });
 map.addLayer(layer);
 //! [layers]
@@ -98,22 +118,3 @@ source.on('change', function() {
   download.href = 'data:text/json;charset=utf-8,' + json;
 });
 //! [Download]
-
-const min = 1e8; // smallest area
-const max = 2e13; // largest area
-const steps = 75;
-const colorramp = colormap({
-  colormap: 'blackbody',
-  nshades: steps
-});
-
-function clamp(value, low, high) {
-  return Math.max(low, Math.min(value, high));
-}
-
-function getColor(feature) {
-  const area = getArea(feature.getGeometry());
-  const f = Math.pow(clamp((area - min) / (max - min, 0, 1), 1 / 2));
-  const index = Math.round(f * (steps - 1));
-  return colorramp[index];
-}
