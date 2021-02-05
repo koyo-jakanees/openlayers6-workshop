@@ -5,6 +5,7 @@ import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
+import Modify from 'ol/interaction/Modify';
 // import TileLayer from 'ol/layer/Tile';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
@@ -33,8 +34,15 @@ map.addLayer(layer);
 //! [layers]
 
 //! [interaction]
+//! [DragAndDrop]
 map.addInteraction(new DragAndDrop({
   source: source,
   formatConstructors: [GeoJSON]
-
 }));
+//! [DragAndDrop]
+
+//! [Modify]
+map.addInteraction(new Modify({
+  source: source
+}));
+//! [Modify]
