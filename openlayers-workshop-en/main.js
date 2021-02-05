@@ -1,11 +1,13 @@
 // alert('Hello Workshop');
 import 'ol/ol.css';
 import DragAndDrop from 'ol/interaction/DragAndDrop';
+import Draw from 'ol/interaction/Draw';
 import GeoJSON from 'ol/format/GeoJSON';
 import Map from 'ol/Map';
 import VectorLayer from 'ol/layer/Vector';
 import VectorSource from 'ol/source/Vector';
 import Modify from 'ol/interaction/Modify';
+import GeometryType from 'ol/geom/GeometryType';
 // import TileLayer from 'ol/layer/Tile';
 // import XYZSource from 'ol/source/XYZ';
 // import {fromLonLat} from 'ol/proj';
@@ -46,3 +48,11 @@ map.addInteraction(new Modify({
   source: source
 }));
 //! [Modify]
+
+//! [Draw]
+map.addInteraction(new Draw({
+  type: GeometryType.POLYGON,
+  source: source
+}));
+//! [Draw]
+//![interaction]
